@@ -17,15 +17,37 @@ if (!dbhost || !dbport || !dbschema || !dbuser || !dbpassword){
 };
 
 const mysql = require('mysql');
-const con = mysql.createConnection({
+const dbcredentials = {
   host: dbhost,
   port: dbport,
   database: dbschema,
   user: dbuser,
   password: dbpassword
-});
+};
 
-connectDB(con);
+let connection;
+function handleDisconnect() {
+  connection = mysql.createConnection(dbcredentials);
+  connection.connect(function(err) {
+    if(err) {
+      console.log('error when connecting to db:', err);
+      setTimeout(handleDisconnect, 2000);
+    } else {
+      console.log(`DB connection to ${dbschema} on ${dbhost}:${dbport} successful`);
+    }
+  });
+    
+  connection.on('error', function(err) {
+    console.log('db error', err);
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') {
+      handleDisconnect();
+    } else {
+      throw err;
+    }
+  });
+}
+
+handleDisconnect();
 
 const telegramBot = require('node-telegram-bot-api');
 const telegram = new telegramBot(token, { polling: true });
@@ -40,22 +62,3 @@ telegram.on('polling_error', (error) => {
     console.log("Please ensure that your token from t.me/botfather is set up correctly in the 'TOKEN' environment variable");
   };
 });
-
-function connectDB(adapter, tries = 4) {
-  adapter.connect((error) => {
-    if (error && tries > 0) {
-      console.log(`tries value ${tries}`)
-      setTimeout(() => {
-        connectDB(adapter, --tries);        
-      }, 3000);
-      return;
-    }
-
-    if (error && tries <= 0) {
-      console.log('Error connecting to the database.');
-      return process.exit(20);
-    }
-
-    console.log(`DB connection to ${dbschema} on ${dbhost}:${dbport}`);    
-  });
-}
