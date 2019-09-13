@@ -2,7 +2,7 @@
   "name": "curatorbot",
   "version": "1.0.0",
   "description": "Manage quote submissions and support accepting or rejecting their submissions, providing them a response",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
