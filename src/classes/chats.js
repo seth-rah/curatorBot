@@ -5,17 +5,20 @@ const chatRegistry = {
   
   register(message) {
     if (!(message.chat.id in this.chats)) {
-      this.chats[message.chat.id] = {messages: [], debounce};
+      this.chats[message.chat.id] = {
+        messages: [],
+        albumDebounce: debounce(done => done(), 250)
+      };
     }
     this.chats[message.chat.id].messages.push(message);
   },
   
   handleAlbum(message, callback = () => {})  {
     if (message.media_group_id && this.isAlbumInChat(message)) {
-      this.chats[message.chat.id].debounce(() => {
+      this.chats[message.chat.id].albumDebounce(() => {
         this.cleanupChatAlbum(message);
         callback();
-      }, 1000);
+      });
     }
   },
   
