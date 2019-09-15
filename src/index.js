@@ -5,7 +5,11 @@ const telegramBot = require('node-telegram-bot-api');
 const telegram = new telegramBot(env.TOKEN, { polling: true });
 
 telegram.on("text", (message) => {
-  telegram.sendMessage(message.chat.id, "Brei is Gay");
+  telegram.sendMessage(message.chat.id, "Brei is Gay, also I only accept posts with images or albums.");
+});
+
+telegram.on("photo", (message) => {
+  telegram.sendMessage(message.chat.id, "Brei is Gay, also thanks for the image response.");
 });
 
 telegram.on('polling_error', (error) => {
