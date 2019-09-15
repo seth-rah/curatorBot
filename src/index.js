@@ -19,7 +19,7 @@ debounce(telegram.on('message', (message) => {
   if (!message.photo && message.media_group_id){
     telegram.sendMessage(message.chat.id, "Brei is Gay, also I only accept posts with images or albums.");
   } else if (message.photo && message.media_group_id) {
-    telegram.sendMessage(message.chat.id, "Brei is Gay, also thanks for the image.");
+    telegram.sendMessage(message.chat.id, "Brei is Gay, also thanks for the album.");
   }
 }), 3000);
 
