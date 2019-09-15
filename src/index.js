@@ -1,27 +1,25 @@
 const env = require('./helpers/environment');
 const connection = require('./classes/mysql');
-
-const debounce = require('debounce');
+const chatRegistry = require('./classes/chats');
 const telegramBot = require('node-telegram-bot-api');
 
 const telegram = new telegramBot(env.TOKEN, { polling: true });
 
 telegram.on('message', (message) => {
-  if (!message.photo && !message.media_group_id){
-    telegram.sendMessage(message.chat.id, "Brei is Gay, also I only accept posts with images or albums.");
-  } else if (message.photo && !message.media_group_id) {
+  chatRegistry.register(message);
+  
+  if (message.media_group_id) {
+    chatRegistry.handleAlbum(message, () => {
+      telegram.sendMessage(message.chat.id, "Brei is Gay, also I only accept posts with images or albums.");  
+    });
+    return;
+  }
+  
+  if (message.photo) {
     telegram.sendMessage(message.chat.id, "Brei is Gay, also thanks for the image.");
+    return;
   }
 });
-
-//debounce(fn, wait, [ immediate || false ])
-debounce(telegram.on('message', (message) => {
-  if (!message.photo && message.media_group_id){
-    telegram.sendMessage(message.chat.id, "Brei is Gay, also I only accept posts with images or albums.");
-  } else if (message.photo && message.media_group_id) {
-    telegram.sendMessage(message.chat.id, "Brei is Gay, also thanks for the album.");
-  }
-}), 3000);
 
 telegram.on('polling_error', (error) => {
   console.log(error.message);
