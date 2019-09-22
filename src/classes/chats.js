@@ -29,7 +29,7 @@ const chatRegistry = {
   },
   
   cleanupChatAlbum(message) {
-    this.chats[message.chat.id].messages.filter((storedMessage) => {
+    this.chats[message.chat.id].messages = this.chats[message.chat.id].messages.filter((storedMessage) => {
       return storedMessage.media_group_id !== message.media_group_id;
     });
   }

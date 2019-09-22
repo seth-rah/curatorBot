@@ -13,14 +13,18 @@ telegram.on('message', (message) => {
       telegram.sendMessage(message.chat.id, "Brei is Gay, thanks for the Album.");  
     });
     return;
-  } else if (message.photo){
+  } 
+  
+  if (message.photo) {
     telegram.sendMessage(message.chat.id, "Brei is Gay, thanks for the image.");
     return;
-  } else if (message){
+  } 
+  
+  if (message) {
     telegram.sendMessage(message.chat.id, "Brei is Gay, I only accept images and albums of images");
     return;
   }
-}); 
+});
 
 telegram.on('polling_error', (error) => {
   console.log(error.message);
