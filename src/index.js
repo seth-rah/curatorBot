@@ -20,7 +20,7 @@ telegram.on('message', (message) => {
     telegram.sendMessage(message.chat.id, "Brei is Gay, I only accept images and albums");
     return;
   }
-  
+}); 
 //   if (message.photo) {
 //     telegram.sendMessage(message.chat.id, "Brei is Gay, thanks for the image.");
 //     return;
