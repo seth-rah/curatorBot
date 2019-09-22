@@ -7,7 +7,7 @@ const chatRegistry = {
     if (!(message.chat.id in this.chats)) {
       this.chats[message.chat.id] = {
         messages: [],
-        albumDebounce: debounce(done => done(), 250)
+        albumDebounce: debounce(done => done(), 1000)
       };
     }
     this.chats[message.chat.id].messages.push(message);

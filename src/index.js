@@ -10,16 +10,27 @@ telegram.on('message', (message) => {
   
   if (message.media_group_id) {
     chatRegistry.handleAlbum(message, () => {
-      telegram.sendMessage(message.chat.id, "Brei is Gay, also I only accept posts with images or albums.");  
+      telegram.sendMessage(message.chat.id, "Brei is Gay, thanks for the Album.");  
     });
+    return;
+  } else if (message.photo){
+    telegram.sendMessage(message.chat.id, "Brei is Gay, thanks for the image.");
+    return;
+  } else if (message){
+    telegram.sendMessage(message.chat.id, "Brei is Gay, I only accept images and albums");
     return;
   }
   
-  if (message.photo) {
-    telegram.sendMessage(message.chat.id, "Brei is Gay, also thanks for the image.");
-    return;
-  }
-});
+//   if (message.photo) {
+//     telegram.sendMessage(message.chat.id, "Brei is Gay, thanks for the image.");
+//     return;
+//   }
+
+//   if (message.photo) {
+//     telegram.sendMessage(message.chat.id, "Brei is Gay, thanks for the image.");
+//     return;
+//   }
+// });
 
 telegram.on('polling_error', (error) => {
   console.log(error.message);
