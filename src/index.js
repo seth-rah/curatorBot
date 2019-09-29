@@ -38,8 +38,9 @@ telegram.on('message', (message) => {
   if (message.photo) {
     connection.query(imagesSQL, [imagesTG], (err, result) => {
       if (err) {
+        console.log("Error Number: " && err.errno)
         if (err.errno === 1062){
-          telegram.sendMessage(message.chat.id, "We've already received this image");
+          telegram.sendMessage(message.chat.id, "Brei is Gay, We've already received this image");
           console.log("duplicate image received")
           return;
         }
