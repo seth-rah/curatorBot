@@ -38,7 +38,7 @@ telegram.on('message', (message) => {
   } 
   
   if (message.photo) {
-    connection.query(imagesSQL, imagesTG, function (err, result){
+    connection.query(imagesSQL, [imagesTG], function (err, result){
       if (err === 'ER_DUP_ENTRY'){
         telegram.sendMessage(message.chat.id, "We've already received this image");
         return;
@@ -48,7 +48,7 @@ telegram.on('message', (message) => {
       if (message.text) {
         telegram.sendMessage(message.chat.id, "The additional text on your image will be ignored");
       }
-      
+
       if (err) throw err;
       console.log("DB entry created for images")
     })
