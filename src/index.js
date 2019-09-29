@@ -30,37 +30,31 @@ telegram.on('message', (message) => {
 
   if (message.media_group_id) {
     chatRegistry.handleAlbum(message, () => {
-      telegram.sendMessage(message.chat.id, "Brei is Gay, Albums are unsupported at this time, please condense your post into a single image, we will not accept posts that span context across multiple different images, the text on your image will also be ignored.");  
+      telegram.sendMessage(message.chat.id, "Brei is Gay, Albums are unsupported at this time, please condense your post into a single image, we will not accept posts that span context across multiple different images, text on images will also be ignored.");  
     });
     return;
   } 
   
   if (message.photo) {
-    connection.query(imagesSQL, [imagesTG], function (err, result){
-      if (err.errno === 1062){
-        telegram.sendMessage(message.chat.id, "We've already received this image");
-        console.log("duplicate image received")
-        return;
+    connection.query(imagesSQL, [imagesTG], (err, result) => {
+      if (err) {
+        if (err.errno === 1062){
+          telegram.sendMessage(message.chat.id, "We've already received this image");
+          console.log("duplicate image received")
+          return;
+        }
+      throw err;
       }
-
       telegram.sendMessage(message.chat.id, "Brei is Gay, thanks for the image.");
-      console.log("image received, accepting in process")
-      if (message.text) {
-        telegram.sendMessage(message.chat.id, "The additional text on your image will be ignored");
-        console.log("image contained additional text that will be ignored")
-      }
-
-      if (err) throw err;
       console.log("DB entry created for images")
     })
     return;
   } 
   
   if (message) {
-    telegram.sendMessage(message.chat.id, "Brei is Gay, I only accept messages in an image format, your text on the message will also be ignored");
+    telegram.sendMessage(message.chat.id, "Brei is Gay, We only accept messages in an image format, albums and text on messages will be ignored");
     return;
   }
-
 
 });
 

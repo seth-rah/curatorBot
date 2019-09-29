@@ -15,7 +15,6 @@ CREATE TABLE `bannedusers` (
 CREATE TABLE `images` (
   `id` bigint(64) unsigned NOT NULL AUTO_INCREMENT,
   `chatID` bigint(64) NOT NULL,
-  `mediaGroupID` bigint(64) DEFAULT NULL,
   `messageID` bigint(64) NOT NULL,
   `userID` bigint(64) NOT NULL,
   `userName` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -24,7 +23,6 @@ CREATE TABLE `images` (
   `fileID` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` enum('PENDING','REJECTED','APPROVED','POSTED') COLLATE utf8mb4_unicode_ci NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `imagescol` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `imageID_UNIQUE` (`fileID`),
   UNIQUE KEY `id_UNIQUE` (`id`)
