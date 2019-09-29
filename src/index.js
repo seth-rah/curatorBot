@@ -7,17 +7,6 @@ const telegram = new telegramBot(env.TOKEN, { polling: true });
 
 telegram.on('message', (message) => {
   chatRegistry.register(message);
-  const imagesSQL = "INSERT INTO images (chatID, messageID, userID, userName, userFirstName, userLastName, fileID, status) VALUES ?";
-
-  const chatID = message.chat.id;
-  const messageID = message.message_id;
-  const userID = message.from.id;
-  const userName = message.from.username;
-  const userFirstName = message.from.first_name;
-  const userLastName = message.from.last_name;
-  if (message.photo) {
-    const fileID = message.photo[0].file_id;
-  }
 
   if (message.media_group_id) {
     chatRegistry.handleAlbum(message, () => {
@@ -27,6 +16,14 @@ telegram.on('message', (message) => {
   } 
   
   if (message.photo) {
+    const imagesSQL = "INSERT INTO images (chatID, messageID, userID, userName, userFirstName, userLastName, fileID, status) VALUES ?";
+    const chatID = message.chat.id;
+    const messageID = message.message_id;
+    const userID = message.from.id;
+    const userName = message.from.username;
+    const userFirstName = message.from.first_name;
+    const userLastName = message.from.last_name;
+    const fileID = message.photo[0].file_id;
 
     const imagesTG = [
       [chatID,
