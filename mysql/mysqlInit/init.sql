@@ -21,7 +21,7 @@ CREATE TABLE `images` (
   `userName` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `userFirstName` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `userLastName` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `fileID` bigint(64) NOT NULL,
+  `fileID` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` enum('PENDING','REJECTED','APPROVED','POSTED') COLLATE utf8mb4_unicode_ci NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `imagescol` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,

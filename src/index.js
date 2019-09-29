@@ -7,19 +7,28 @@ const telegram = new telegramBot(env.TOKEN, { polling: true });
 
 telegram.on('message', (message) => {
   chatRegistry.register(message);
-  const imagesSQL = "INSERT INTO images (chatID, messageID, userID, userName, userFirstName, userLastName, fileID, status) VALUES ?"
-  const imagesTG = [
-    telegram.message.chat.id,
-    telegram.message.id,
-    telegram.message.user.id,
-    telegram.message.user.username,
-    telegram.message.user.first_name,
-    telegram.message.user.last_name,
-    telegram.message.photo.file_id,
-    'PENDING'
-  ]
+  const imagesSQL = "INSERT INTO images (chatID, messageID, userID, userName, userFirstName, userLastName, fileID, status) VALUES ?";
 
-  console.log(imagesTG)
+  const chatID = message.chat.id;
+  const messageID = message.message_id;
+  const userID = message.from.id;
+  const userName = message.from.username;
+  const userFirstName = message.from.first_name;
+  const userLastName = message.from.last_name;
+  const fileID = message.photo[0].file_id;
+
+  const imagesTG = [
+    [chatID,
+    messageID,
+    userID,
+    userName,
+    userFirstName,
+    userLastName,
+    fileID,
+    'PENDING']
+  ];
+
+  console.log(imagesTG);
   
   if (message.media_group_id) {
     chatRegistry.handleAlbum(message, () => {
@@ -29,11 +38,17 @@ telegram.on('message', (message) => {
   } 
   
   if (message.photo) {
-    telegram.sendMessage(message.chat.id, "Brei is Gay, thanks for the image.");
-    if (message.text) {
-      telegram.sendMessage(message.chat.id, "The additional text on your image will be ignored");
-    }
     connection.query(imagesSQL, imagesTG, function (err, result){
+      if (err === 'ER_DUP_ENTRY'){
+        telegram.sendMessage(message.chat.id, "We've already received this image");
+        return;
+      }
+
+      telegram.sendMessage(message.chat.id, "Brei is Gay, thanks for the image.");
+      if (message.text) {
+        telegram.sendMessage(message.chat.id, "The additional text on your image will be ignored");
+      }
+      
       if (err) throw err;
       console.log("DB entry created for images")
     })
