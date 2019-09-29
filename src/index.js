@@ -18,6 +18,8 @@ telegram.on('message', (message) => {
     telegram.message.photo.file_id,
     'PENDING'
   ]
+
+  console.log(imagesTG)
   
   if (message.media_group_id) {
     chatRegistry.handleAlbum(message, () => {
