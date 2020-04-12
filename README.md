@@ -9,8 +9,8 @@ In its current state the bot can probably do almost none of the following, so th
 3. Ban users from submitting images.
 4. Posting a response to the user if their image was accepted.
 5. Managing images that still need to be posted.
-6. Super admins are created via config variable
-7. Super admins can use the bot to assign new normal admins, that have access to using the Accept / Reject buttons in the group
+6. Super admins are created via config variable.
+7. Super admins can use the bot to assign new normal admins, that have access to using the Accept / Reject buttons in the group.
 
 ## Known issues
 
