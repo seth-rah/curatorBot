@@ -1,9 +1,31 @@
+const telegramBot = require('node-telegram-bot-api');
 const env = require('./helpers/environment');
 const connection = require('./classes/mysql');
 const chatRegistry = require('./classes/chats');
-const telegramBot = require('node-telegram-bot-api');
-
 const telegram = new telegramBot(env.TOKEN, { polling: true });
+
+var fileOptions = JSON.stringify(
+
+  {
+  	"reply_markup": {
+  		"inline_keyboard": [
+  			[{
+  					"text": "A",
+  					"url": "https://google.com/"
+  				},
+  				{
+  					"text": "B",
+  					"url": "https://google.com/"
+  				}
+  			],
+  			[{
+  				"text": "C",
+  				"url": "https://google.com/"
+  			}]
+  		]
+  	}
+  }
+)
 
 telegram.on('message', (message) => {
   chatRegistry.register(message);
@@ -47,6 +69,8 @@ telegram.on('message', (message) => {
         throw err;
       }
       telegram.sendMessage(message.chat.id, "Thanks for the image.");
+      telegram.sendPhoto(message.chat.id,"AgACAgQAAxkBAAIBtF7QFHt1NiW_gEBVWtb43My5wxLTAAKttDEbLu6AUmUYBdFKEHeLozLLIl0AAwEAAwIAA20AA7-KAgABGQQ", JSON.parse(fileOptions))
+      // telegram.sendPhoto(message.chat.id,"AgACAgQAAxkBAAIBtF7QFHt1NiW_gEBVWtb43My5wxLTAAKttDEbLu6AUmUYBdFKEHeLozLLIl0AAwEAAwIAA20AA7-KAgABGQQ");
       console.log("DB entry created for images")
     })
     return;
